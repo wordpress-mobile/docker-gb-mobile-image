@@ -13,12 +13,12 @@ RUN apt-get update \
 SHELL ["/bin/bash", "--login", "-c"]
 
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
-RUN nvm install lts/*
 
 # Caches `.npm` folder in the image, so future `npm install/ci` actions are faster for `gutenberg-mobile` project
 RUN git clone https://github.com/wordpress-mobile/gutenberg-mobile.git /var/gutenberg-mobile --depth 1 \
     && pushd /var/gutenberg-mobile \
     && git submodule update --init --recursive  \
+    && nvm install \
     && npm ci --no-audit --no-progress --unsafe-perm \
     && popd \
     && rm -rf /var/gutenberg-mobile
