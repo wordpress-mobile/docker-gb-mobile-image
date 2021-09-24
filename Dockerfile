@@ -19,6 +19,7 @@ RUN nvm install lts/*
 RUN git clone https://github.com/wordpress-mobile/gutenberg-mobile.git /var/gutenberg-mobile --depth 1 \
     && pushd /var/gutenberg-mobile \
     && git submodule update --init --recursive  \
+    && nvm install \
     && npm ci --no-audit --no-progress --unsafe-perm \
     && popd \
     && rm -rf /var/gutenberg-mobile
