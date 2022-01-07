@@ -7,7 +7,7 @@ RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 RUN echo fs.inotify.max_user_watches=524288 | tee -a /etc/sysctl.conf
 
 RUN apt-get update \
-    && apt-get install -y curl git php-cli \
+    && apt-get install -y curl git php-cli php-mbstring  \
     && apt-get -y autoclean
 
 SHELL ["/bin/bash", "--login", "-c"]
