@@ -3,16 +3,20 @@ FROM debian:stable-slim
 
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 
-# Increase the file watcher limit for node. This should not be necessary for CI builds since watchers should be disabled, but it can be useful when running this image in a local environment. 
+# Increase the file watcher limit for node. This should not be necessary for CI builds since watchers should be disabled, but it can be useful when running this image in a local environment.
 RUN echo fs.inotify.max_user_watches=524288 | tee -a /etc/sysctl.conf
 
 RUN apt-get update \
-    && apt-get install -y curl git php-cli php-mbstring  \
+    && apt-get install -y curl \
+    && apt-get install -y git \
+    && apt-get install -y php-cli \
+    && apt-get install -y php-mbstring \
     && apt-get -y autoclean
 
 SHELL ["/bin/bash", "--login", "-c"]
 
-RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
+# Install nvm
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
 RUN nvm install lts/*
 
 # Caches `.npm` folder in the image, so future `npm install/ci` actions are faster for `gutenberg-mobile` project
