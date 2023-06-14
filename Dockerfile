@@ -27,3 +27,19 @@ RUN git clone https://github.com/wordpress-mobile/gutenberg-mobile.git /var/gute
     && npm ci --no-audit --no-progress --unsafe-perm \
     && popd \
     && rm -rf /var/gutenberg-mobile
+
+# Add CI toolkit
+#
+# Using HTTPS to clone because there's no SSH key in the image
+RUN git clone https://github.com/Automattic/a8c-ci-toolkit-buildkite-plugin /ci-toolkit
+# Add ci-toolkit to the PATH
+RUN echo 'export PATH="$PATH:/ci-toolkit/bin"' >> ~/.bashrc
+
+# Install AWS CLI
+RUN apt-get install -y unzip
+RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscli.zip" && \
+    unzip awscli.zip && \
+    ./aws/install
+
+# Install jq
+RUN apt-get install -y jq
